@@ -1,0 +1,126 @@
+1.为什么要使用super关键字？
+
+	1）子类中要访问父类方法或变量。
+	2) 子类中调用父类的构造器
+2.使用注意事项：
+
+	a. 只能在构造方法或实例方法内使用super关键字，在静态方法和静态代码块内不能使用super关键字。
+	b. 在子类构造方法中如没有使用this关键字，会隐式调用父类的无参构造方法；
+	c. 构造方法中this(…)和super(…)不能同时出现；（因为如果同时出现，父类初始化多次）
+	※ 注：this关键字与super关键字的区别，this表示当前的，super则表示父类的。
+	
+	 class Father() { 
+            public Father() {
+               //这里第一行隐含一句代码: super();
+                       System.out.println("In Father()");
+                }
+          }
+
+          class Son extends Father {
+          }
+
+          public class Test {
+                 public static void main(String[] args) {
+                        new Son(); //打印输出 In Father()
+                 }
+          }
+
+          -----------------------------------------------------------------------
+
+          class Father() { 
+            public Father() {
+                       System.out.println("In Father()");
+                }
+          }
+
+          class Son extends Father {
+                public Son() {
+                       System.out.println("In Son()");  
+                }   
+          }
+
+          public class Test {
+                 public static void main(String[] args) {
+                        new Son(); 
+                        //打印输出 In Father()
+                        //         In Son()
+                 }
+          }
+
+          -----------------------------------------------------------------------
+
+          class Father() { 
+            public Father(String name) {
+                       System.out.println("In Father() " + name);
+                }
+          }
+
+          class Son extends Father {
+                public Son() {
+                       System.out.println("In Son()");  
+                }   
+          }
+
+          public class Test {
+                 public static void main(String[] args) {
+                        new Son();  //编译出错, 子类会隐式调用父类中无参构造方法，而此时父类中不存在无参构造方法。
+                 }
+          }
+
+          -----------------------------------------------------------------------
+
+          class Father() { 
+            public Father(String name) {
+                       System.out.println("In Father() " + name);
+                }
+          }
+
+          class Son extends Father {
+                public Son() {
+                       super("zs");
+                       System.out.println("In Son()");  
+                }   
+          }
+
+          public class Test {
+                 public static void main(String[] args) {
+                        new Son();  
+                        //打印输出：
+                        //In Father() zs
+                        //In Son()
+                 }
+          }
+
+          -----------------------------------------------------------------------
+
+          class Father() { 
+            public Father() {
+                       System.out.println("In Father()");
+                }
+
+            public Father(String name) {
+                       System.out.println("In Father(String name)");
+                }
+          }
+
+          class Son extends Father {
+                public Son() {
+                       this("zs");
+                       System.out.println("In Son()");  
+                }
+
+                public Son(String name) {
+                       System.out.println("In Son(String name)");   
+                }   
+          }
+
+          public class Test {
+                 public static void main(String[] args) {
+                        new Son();  
+                        //打印输出：
+                        //In Father()
+                        //In Son(String name)
+                        //In Son()
+                 }
+          }
+
